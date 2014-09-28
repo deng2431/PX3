@@ -60,6 +60,9 @@ use strict;
 	  
 	  # my $email = $msg->as_string();
 	  
+	  
+	  
+	  
 	  my $self = eBay::API::XML::Call::UploadSiteHostedPictures::UploadSiteHostedPicturesRequestType->new();
 	  
 	$pCall->getRequestDataType()->setPictureData( $encoded);
