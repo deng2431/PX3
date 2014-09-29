@@ -16,20 +16,20 @@ use ebayAPI::ebayAPI;
 		authToken => 'AgAAAA**AQAAAA**aAAAAA**vnj7Uw**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6wNmYqpAJaLogWdj6x9nY+seQ**B2wCAA**AAMAAA**E9FZwUywJKCaHos1XgqtnKQsT+P2V2VJ4ARcYaIJ5Dw+Uyu7fCp3IMWgSbaf9/QMPgDBn6uNFH0ZUCWmSMgMhb2Kc1TFBiLvhEq0ULrMG4yctEFKGN2P2SwSfYNUhDCGH3ifQD/sZ6+pHca42g453x1PtpUokrsqVnqThgTM5OrO+NF+GR1z2s88PfbICr6cd9ep5otOJdLx+wg/jYp5WMVvkEI+F3EQihimMWL/9hRpTCEDyogXSbIb6gQUvpDRtVJwXN072oMVkBuVjgK5epWxN+vQ/J0ZSxbAhH7GFBsu5aLMghAmcV8W3Kip/xl65PTBhblEnI+O+X8mou3oNIvEwkADFZa1xWJBoDBMN1/+4rFWIQh+xjXhb1ncikS3Qt0RTvD+S4gMj0Jx7/P8sxtrI2jiEPwbHgZU6qEaSt3d6xVxeVWJsvqOQsOWpfyVIf/o3mIZnDD9UpO9Exx6gqIaWr9WdtGAqZAS8wsoXX3KMWqlFsZsJ14s97AtfA0zQsXopHydLcF/4dioHgwo8eA2CDlPe+5o6QtY1ZGEgTtpa0Mz4qBrGUigMqK0rnGShqkv4BwXacqRbZbvwlxX9CbuVErQots3FRMTPCE667uLUK2qn5y7XuBqil55zLO/ULqZ/TuWQqFyoHlmp7JZpeg9mZv8Z5Xs+ufFbk71QmolTSf0m1lKp4l2hhquiB071ZfS8rdKdMB0hw1p5HC+D8cwzpDIaiwOeOBwb4fhHoSujaticV0pcitxbBd8S8+z',
 
 		siteID => 15,
-		complvl => 889
+		complvl => 871
 
 	);
 
 
 	ebayAPI->addItem(
 
-		title => 'Nikon D90 Api Testing 4 - DO NOT BUY!!!!!',
-		startPrice => 1.50,
+		title => 'Harry Potter and the Philosopher test 2',
+		startPrice => 78.50,
 		quantity => 1,	
 		description =>'this is just testing, please do not buy!!!',
 		countryCode =>'AU',
 		currencyCode =>'AUD',
-		listingDuration=>'Days_10',
+		listingDuration=>'Days_7',
 		location=>'Liverpool',
 		postalCode=> 2170,
 		paymentMethod=>'PayPal',
@@ -46,12 +46,12 @@ use ebayAPI::ebayAPI;
 		shippingService=>'AU_Express',
 		ShippingServiceCost=> 3.0,
 		shippingServicePriority=>1,
-		categoryID=>31388
+		categoryID=>377
 		
 
 	);
 	
-
+	
 	
 =pod
 	ebayAPI->updateItem(
@@ -64,4 +64,3 @@ use ebayAPI::ebayAPI;
 
 	);
 =cut
-	

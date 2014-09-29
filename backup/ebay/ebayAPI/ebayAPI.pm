@@ -1,7 +1,7 @@
 
 
 package ebayAPI;
-use strict;
+use strict ;
 use warnings;
  use eBay::API::XML::Call::AddItem;
 # revise item calls
@@ -14,15 +14,13 @@ use eBay::API::XML::DataType::ItemType;
 use eBay::API::XML::DataType::CategoryType;
 use eBay::API::XML::DataType::ShippingServiceOptionsType;
 
-use eBay::API::XML::DataType::PictureDetailsType;
-
 
 	our $VERSION = "0.1";
 
 
 	my ($devID, $appID, $cerID, $apiUrl, $authToken, $siteID, $complvl);
 
-# get ebay account details 
+
 sub ebayAccount{
 
 		my $class = shift;
@@ -41,25 +39,7 @@ sub ebayAccount{
 
 	}
 
-# set the account details using the data retreived from ebayAccount();
-sub setEbayAccount{
 
-
-		my ($pCall) = @_;
-
-			$pCall->setApiUrl($apiUrl);
-			$pCall->setDevID($devID);
-			$pCall->setAppID($appID );
-			$pCall->setCertID($cerID );
-			$pCall->setAuthToken($authToken);
-			$pCall->setSiteID($siteID); 
-			$pCall->getCompatibilityLevel($complvl);
-
-			
-}
-	
-	
-	
 sub addItem{
 
 		my $class = shift;
@@ -129,9 +109,14 @@ sub excute_updateItem{
 		 my $pCall =  eBay::API::XML::Call::ReviseItem->new();
 		 
 		 
-		 setEbayAccount($pCall);
-		
-
+			$pCall->setApiUrl($apiUrl);
+			$pCall->setDevID($devID);
+			$pCall->setAppID($appID );
+			$pCall->setCertID($cerID );
+			$pCall->setAuthToken($authToken);
+			$pCall->setSiteID($siteID); 
+			$pCall->getCompatibilityLevel($complvl);
+			 
 		 
 		
 		 $pCall->setItem($pItem);
@@ -253,17 +238,17 @@ sub excute_addItem{
 		my $pCat = eBay::API::XML::DataType::CategoryType->new();
 			$pCat->setCategoryID($categoryID);
 		$pItem->setPrimaryCategory($pCat);
-		
-		my $image = eBay::API::XML::DataType::PictureDetailsType->new();
-		$image->setPictureURL("http://multi-medium.net/wp-content/uploads/2008/06/d90.jpg");
-		
 	
-		$pItem->setPictureDetails($image);
 
 		my $pCall = eBay::API::XML::Call::AddItem->new();
 		
-
-		setEbayAccount($pCall);
+			$pCall->setApiUrl($apiUrl);
+			$pCall->setDevID($devID);
+			$pCall->setAppID($appID );
+			$pCall->setCertID($cerID );
+			$pCall->setAuthToken($authToken);
+			$pCall->setSiteID($siteID); 
+			$pCall->getCompatibilityLevel($complvl);
 			
 	
 	 
@@ -280,7 +265,7 @@ sub excute_addItem{
 	  		print "\n\n\n \t \t *** eBay Item Listing *** ";
 		
 			if ($hasErrors) {
-				
+				print "\n\n \t \t --Error Occured--";
 				
 			my $raErrors = $pCall->getErrors();
 				
@@ -316,20 +301,6 @@ sub excute_addItem{
 							print "\n\n\n";
 						}
 				
-				my @warning = $pCall->getWarnings;
-				
-				my $warningCount = 1;
-				
-				foreach my $warnList (@warning) {
-				
-				my $sLongMessage = $warnList->getLongMessage();
-				
-				print "\t Warning $warningCount: \t $sLongMessage \n\n\n";
-				
-				$warningCount +=1;
-				
-				}
-				
 				
 			}
 	
@@ -341,8 +312,6 @@ sub excute_addItem{
 	sub errorMsg{
 	
 		my ($errorList) = @_;
-			
-			print "\n\n \t \t --Error Occured--";
 			
 				foreach my $pError ( @$errorList ) {
 
