@@ -20,7 +20,7 @@ use ebayAPI::ebayAPI;
 
 	);
 
-
+=pod
 	ebayAPI->addItem(
 
 		title => 'Nikon D90 Api Testing 4 - DO NOT BUY!!!!!',
@@ -51,17 +51,15 @@ use ebayAPI::ebayAPI;
 
 	);
 	
-
+=cut
 	
-=pod
+
 	ebayAPI->updateItem(
 
-		itemID => 301330409366,
+		itemID => 301333083035,
 
-		Description => "Hey this is just testing, so dont purchase this item",
-
-		StartPrice => '300.59'
+		pictureurl => "http://multi-medium.net/wp-content/uploads/2008/06/d90.jpg"
 
 	);
-=cut
+
 	

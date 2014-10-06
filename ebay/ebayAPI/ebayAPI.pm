@@ -3,6 +3,9 @@
 package ebayAPI;
 use strict;
 use warnings;
+
+use Hash::Case::Lower;
+
  use eBay::API::XML::Call::AddItem;
 # revise item calls
 use  eBay::API::XML::Call::ReviseItem;
@@ -66,9 +69,17 @@ sub addItem{
 
 		my $self = {@_};
 
-		bless($self, $class);
-
-		excute_addItem($self);
+		# bless($self, $class);
+		
+	# Converts the all hash keys(e.g. itemID to itemid) to lower cases	
+	
+		my %convert_LC;
+		
+		tie %convert_LC => 'Hash::Case::Lower' => \%$self;
+		
+		my $itemName_lower = \%convert_LC;
+		
+		excute_addItem($itemName_lower);
 
 	}
 	
@@ -80,12 +91,19 @@ sub updateItem{
 
 		my $self = {@_};
 
-		bless($self, $class);
+		# bless($self, $class);
 
 		# return $self;
 
+	# Converts the all hash keys(e.g. itemID to itemid) to lower cases	
+	
+		my %convert_LC;
 		
-		excute_updateItem($self);
+		tie %convert_LC => 'Hash::Case::Lower' => \%$self;
+		
+		my $itemName_lower = \%convert_LC;
+		
+		excute_updateItem($itemName_lower);
 
 	}
 
@@ -98,7 +116,7 @@ sub excute_updateItem{
 		my $pItem = eBay::API::XML::DataType::ItemType->new();
 
 		
-			my $itemID =  $self->{itemID};
+			my $itemID =  $self->{itemid};
 
 				if(defined $itemID)
 				{
@@ -108,7 +126,7 @@ sub excute_updateItem{
 				}
 
 
-			my $Description =  $self->{Description};
+			my $Description =  $self->{description};
 					
 				if(defined $Description)
 				{
@@ -116,15 +134,27 @@ sub excute_updateItem{
 				}	
 
 
-			my $StartPrice =  $self->{StartPrice};
+			my $StartPrice =  $self->{startprice};
 
 				if(defined $StartPrice)
 				{
 
 						$pItem ->setStartPrice($StartPrice);
 				}
+				
+			my $getPicture = $self->{pictureurl};
+			
+			if(defined $getPicture){
+			
+				my $image = eBay::API::XML::DataType::PictureDetailsType->new();
+				$image->setPictureURL($getPicture);
+				$image->setGalleryURL($getPicture);
+				
+		
+	
+				$pItem->setPictureDetails($image);
 
-
+			}
 			
 		 my $pCall =  eBay::API::XML::Call::ReviseItem->new();
 		 
@@ -181,6 +211,17 @@ sub excute_updateItem{
 							print "\n\n\n";
 						}
 				
+				my @warning = $pCall->getWarnings;
+				
+					my $warningCount = 1;
+				
+						foreach my $warnList (@warning) {
+							my $sLongMessage = $warnList->getLongMessage();
+							
+							print "\t Warning $warningCount: \t $sLongMessage \n\n\n";
+				
+								$warningCount +=1;
+						}
 				
 			}
 
@@ -194,29 +235,29 @@ sub excute_addItem{
 	my $self = shift;
 
 		my $title  =  $self->{title};
-		my $startPrice  =  $self->{startPrice};
+		my $startPrice  =  $self->{startprice};
 		my $quantity  =  $self->{quantity};
 		my $description  =  $self->{description};
-		my $countryCode =  $self->{countryCode};
-		my $currencyCode  =  $self->{currencyCode};
-		my $listingDuration  =  $self->{listingDuration};
+		my $countryCode =  $self->{countrycode};
+		my $currencyCode  =  $self->{currencycode};
+		my $listingDuration  =  $self->{listingduration};
 		my $location  =  $self->{location};
-		my $postcode  =  $self->{postalCode};
-		my $paymentMethod  =  $self->{paymentMethod};
-		my $conditionID  =  $self->{conditionID};
-		my $dispatchTimeMax  =  $self->{dispatchTimeMax};
-		my $listingType  =  $self->{listingType};
-		my $payPalEmailAddress  =  $self->{payPalEmailAddress};
-		my $returnsAcceptedOption  =  $self->{returnsAcceptedOption};
-		my $refundOption  =  $self->{refundOption};
-		my $returnsWithinOption  =  $self->{returnsWithinOption};
-		my $returnPolicyDetail  =  $self->{returnPolicyDetail};
-		my $shippingCostPaidByOption  =  $self->{shippingCostPaidByOption};
-		my $shippingType  =  $self->{shippingType};
-		my $shippingService  =  $self->{shippingService};
-		my $shippingServiceCost  =  $self->{ShippingServiceCost};
-		my $shippingServicePriority  =  $self->{shippingServicePriority};
-		my $categoryID  =  $self->{categoryID};
+		my $postcode  =  $self->{postalcode};
+		my $paymentMethod  =  $self->{paymentmethod};
+		my $conditionID  =  $self->{conditionid};
+		my $dispatchTimeMax  =  $self->{dispatchtimemax};
+		my $listingType  =  $self->{listingtype};
+		my $payPalEmailAddress  =  $self->{payPalemailaddress};
+		my $returnsAcceptedOption  =  $self->{returnsacceptedoption};
+		my $refundOption  =  $self->{refundoption};
+		my $returnsWithinOption  =  $self->{returnswithinoption};
+		my $returnPolicyDetail  =  $self->{returnPolicydetail};
+		my $shippingCostPaidByOption  =  $self->{shippingcostpaidbyoption};
+		my $shippingType  =  $self->{shippingtype};
+		my $shippingService  =  $self->{shippingservice};
+		my $shippingServiceCost  =  $self->{Shippingservicecost};
+		my $shippingServicePriority  =  $self->{shippingservicepriority};
+		my $categoryID  =  $self->{categoryid};
 		# my $  =  $self->{};
 
 		
