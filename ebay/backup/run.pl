@@ -1,14 +1,13 @@
 
-#!/usr/bin/perl 
+
 use strict;
 use warnings;
-use lib '../';
-use ebayAPI; 
+use lib "ebayAPI";
+use ebayAPI::ebayAPI;
 
-# ./run.pl
-# ./eBayAPI.pm
 
-my $api = eBayAPI->new(
+
+	ebayAPI->ebayAccount(
 
 		apiUrl => 'https://api.ebay.com/ws/api.dll',
 		devID => 'e68fceb1-b097-4926-8b1c-0c329db0fbf3',
@@ -21,26 +20,13 @@ my $api = eBayAPI->new(
 
 	);
 
-=pod	
-	print $api;
-	
-	$api->hi(
-	
-	title => 'dgfhdfgh',
-	
-	test => 'sdgasdfh'
-	
-	);
-	
-=cut
+=pod
+	ebayAPI->addItem(
 
-
-my $item_id = $api->add_item(
-
-		title => 'tsdfhdfh',
+		title => 'Nikon D90 Api Testing 4 - DO NOT BUY!!!!!',
 		startPrice => 1.50,
 		quantity => 1,	
-		description =>'test listing',
+		description =>'this is just testing, please do not buy!!!',
 		countryCode =>'AU',
 		currencyCode =>'AUD',
 		listingDuration=>'Days_10',
@@ -49,7 +35,7 @@ my $item_id = $api->add_item(
 		paymentMethod=>'PayPal',
 		conditionID=>1000,
 		dispatchTimeMax=>3,
-		listingType=>'FixedPriceItem',
+		listingType=>'Chinese',
 		payPalEmailAddress=>'michael_mrmycool@msn.com',
 		returnsAcceptedOption=>'ReturnsAccepted',
 		refundOption=>'MoneyBack',
@@ -60,46 +46,21 @@ my $item_id = $api->add_item(
 		shippingService=>'AU_Express',
 		ShippingServiceCost=> 3.0,
 		shippingServicePriority=>1,
-		categoryID=>171788
+		categoryID=>31388
 		
 
 	);
-
-
-if ($item_id) {
-	# update_item()
-	$api->update_item(
-		itemId => $item_id,
-		setThumbnail => "http://multi-medium.net/wp-content/uploads/2008/06/d90.jpg",
-		pictureurl => "http://multi-medium.net/wp-content/uploads/2008/06/d90.jpg",
-		pictureurl1 => "http://www.ephotozine.com/articles/nikon-d5200-dslr-sample-photo-gallery-21069/images/highres-nikon-d5200-3_1357642698.jpg",
-	    quantity => 4 # <- can you please make sure that quantity is set?
-	);
-}
-=pod
-else {
-	print $api->error() # <- error() should returns the error message;
-}
-=cut
-=pod
-# delete_item() should return true (return 1;) on succesful()
-if ($api->delete_item($item_id)) {
-	print "Item Deleted";
-}
-else {
-	print $api->error(); # <- error() should returns the error message;	
-}
 	
 =cut
-=pod	
+	
 
 	ebayAPI->updateItem(
 
-		itemID => 301347024014,
-		setThumbnail => "http://multi-medium.net/wp-content/uploads/2008/06/d90.jpg",
+		itemID => 301333083035,
+
 		pictureurl => "http://multi-medium.net/wp-content/uploads/2008/06/d90.jpg",
-		pictureurl1 => "http://www.ephotozine.com/articles/nikon-d5200-dslr-sample-photo-gallery-21069/images/highres-nikon-d5200-3_1357642698.jpg"
+		pictureurl1 =>"http://upload.wikimedia.org/wikipedia/commons/2/23/Nikon_D3100.jpg"
 
 	);
-=cut
+
 	

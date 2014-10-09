@@ -3,7 +3,7 @@
 package ebayAPI;
 use strict;
 use warnings;
-
+use lib "main_api";
 use Hash::Case::Lower;
 
  use eBay::API::XML::Call::AddItem;
@@ -143,11 +143,13 @@ sub excute_updateItem{
 				}
 				
 			my $getPicture = $self->{pictureurl};
+			my $getPicture1 = $self->{pictureurl1};
 			
 			if(defined $getPicture){
 			
 				my $image = eBay::API::XML::DataType::PictureDetailsType->new();
 				$image->setPictureURL($getPicture);
+				$image->setPictureURL($getPicture1);
 				$image->setGalleryURL($getPicture);
 				
 		
