@@ -37,7 +37,7 @@ my $api = eBayAPI->new(
 
 my $item_id = $api->add_item(
 
-		title => 'tsdfhdfh',
+		title => 'test listing 6',
 		startPrice => 1.50,
 		quantity => 1,	
 		description =>'test listing',
