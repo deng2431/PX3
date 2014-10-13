@@ -11,6 +11,7 @@ use Hash::Case::Lower;
 use  eBay::API::XML::Call::ReviseItem;
 # Verify Add item call
 use eBay::API::XML::Call::VerifyAddItem;
+use eBay::API::XML::Call::GetSuggestedCategories;
 
 
 use eBay::API::XML::DataType::ItemType;
@@ -19,6 +20,9 @@ use eBay::API::XML::DataType::ShippingServiceOptionsType;
 
 use eBay::API::XML::DataType::PictureDetailsType;
 
+
+use eBay::API::XML::Call::EndItem;
+use eBay::API::XML::DataType::Enum::EndReasonCodeType;
 
 	our $VERSION = "0.1";
 
@@ -101,6 +105,54 @@ my $apiUrl =  $hi2->{title};
 }
 =cut
 
+
+
+sub get_category{
+
+
+	# my $acc_info = shift;
+	my ($self,$acc_info) = @_;
+	
+	
+	
+	my $pCall = eBay::API::XML::Call::GetSuggestedCategories->new();
+	
+		_account($pCall,$acc_info);
+		
+		$pCall->setQuery($self);
+		
+		$pCall->execute();
+		
+		my $count = $pCall->getCategoryCount();
+		
+		 my @cat_array = $pCall->getSuggestedCategoryArray()->getSuggestedCategory();
+=pod		 
+		 foreach my $cat_array1(@cat_array){
+		 
+		 my $cat_name =  $cat_array1->getCategory()->getCategoryName;
+		 
+		my $cat_id = $cat_array1->getCategory()->getCategoryID;
+		
+		print "\t Cat name: \t $cat_name - \t ID: \t $cat_id \n"
+		 
+		 }
+=cut		
+		# print $cat_array[0]->getCategory()->getCategoryID;
+		
+		# return $cat_array[0]->getCategory()->getCategoryID;
+		
+		
+		return 171788;
+		
+
+
+
+
+}
+
+
+
+
 sub add_item{
 
 
@@ -146,6 +198,52 @@ sub update_item{
 		excute_update_item($itemName_lower,$acc_info);
 
 	}
+
+
+	
+sub delete_item{
+
+		my $acc_info = shift;
+
+		my $self = {@_};
+		
+		my %convert_LC;
+		
+		tie %convert_LC => 'Hash::Case::Lower' => \%$self;
+		
+		my $itemName_lower = \%convert_LC;
+		
+		excute_delete_item($itemName_lower,$acc_info);
+
+
+}
+
+sub excute_delete_item{
+
+
+my ($self,$acc) = @_;
+
+	my $itemID =  $self->{itemid};
+	my $end_reason =  $self->{end_reason};
+	
+
+	my $pCall = eBay::API::XML::Call::EndItem->new();
+	_account($pCall,$acc);
+		$pCall->setItemID($itemID);
+	$pCall->setEndingReason($end_reason);
+	
+	 
+	 
+	  $pCall->execute();
+	  
+			my $getACK = $pCall->getAck();
+			
+			print $getACK;
+			
+
+
+}
+
 
 
 
@@ -317,7 +415,7 @@ sub excute_add_item{
 		my $shippingService  =  $self->{shippingservice};
 		my $shippingServiceCost  =  $self->{Shippingservicecost};
 		my $shippingServicePriority  =  $self->{shippingservicepriority};
-		my $categoryID  =  $self->{categoryid};
+		# my $categoryID  =  $self->{categoryid};
 		# my $  =  $self->{};
 
 		
@@ -351,6 +449,9 @@ sub excute_add_item{
 			$ship->setShippingServicePriority($shippingServicePriority);
 	   $pItem->getShippingDetails()->setShippingServiceOptions($ship);
 
+	   
+	   my $categoryID = get_category($title,$acc);
+	   
 		my $pCat = eBay::API::XML::DataType::CategoryType->new();
 			$pCat->setCategoryID($categoryID);
 		$pItem->setPrimaryCategory($pCat);
