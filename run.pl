@@ -45,7 +45,7 @@ if($api->list_categories){
 
  foreach my $io (@{$api->list_categories}){
 	
-	print $io->{cat_id}."\n";
+	print $io->{cat_id}."\t".$io->{cat_name}."\n";
  
  }
 }

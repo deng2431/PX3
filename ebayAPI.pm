@@ -133,13 +133,13 @@ my $self =shift;
 
 sub delete_item {
 
-    my $acc = shift;
+    my $self = shift;
 
-    my $self = {@_};
+    my $get_items = {@_};
 
     my %convert_LC;
 
-    tie %convert_LC => 'Hash::Case::Lower' => \%$self;
+    tie %convert_LC => 'Hash::Case::Lower' => \%$get_items;
 
     my $item_name = \%convert_LC;
 
@@ -147,7 +147,7 @@ sub delete_item {
     my $end_reason = $item_name->{end_reason};
 
     my $pCall = eBay::API::XML::Call::EndItem->new();
-    _account( $pCall, $acc );
+    _account( $pCall, $self );
 
     $pCall->setItemID($itemID);
     $pCall->setEndingReason($end_reason);
@@ -166,7 +166,7 @@ sub delete_item {
             my $sShortMessage = $pError->getShortMessage();
             my $sLongMessage  = $pError->getLongMessage();
 
-            push @{ $acc->{error} },
+            push @{ $self->{error} },
               {
                 code          => $sErrorCode,
                 short_message => $sShortMessage,
@@ -174,14 +174,14 @@ sub delete_item {
               };
         }
 
-        $acc->{get_ack} = 0;
+        $self->{get_ack} = 0;
 
     }
     else {
 
         my $getACK = $pCall->getAck();
 
-        $acc->{get_ack} = 1;
+        $self->{get_ack} = 1;
 
     }
 
@@ -189,9 +189,9 @@ sub delete_item {
 
 sub update_item {
 
-    my $acc = shift;
+    my $self = shift;
 
-    my $get_ebay_items = {@_};
+    my $get_items = {@_};
 
     # print Dumper ($get_ebay_items);
 
@@ -199,7 +199,7 @@ sub update_item {
 
     my %convert_LC;
 
-    tie %convert_LC => 'Hash::Case::Lower' => \%$get_ebay_items;
+    tie %convert_LC => 'Hash::Case::Lower' => \%$get_items;
 
     my $item_name = \%convert_LC;
 
@@ -283,7 +283,7 @@ sub update_item {
 
     my $pCall = eBay::API::XML::Call::ReviseItem->new();
 
-    _account( $pCall, $acc );
+    _account( $pCall, $self );
 
     $pCall->setItem($pItem);
 
@@ -305,7 +305,7 @@ sub update_item {
 
             # print Dumper ($sShortMessage);
 
-            push @{ $acc->{error} },
+            push @{ $self->{error} },
               {
                 code          => $sErrorCode,
                 short_message => $sShortMessage,
@@ -315,14 +315,14 @@ sub update_item {
 
         # print Dumper ($item_name->{error});
 
-        $acc->{get_ack} = 0;
+        $self->{get_ack} = 0;
 
     }
     else {
 
         my $getACK = $pCall->getAck();
 
-        $acc->{get_ack} = 1;
+        $self->{get_ack} = 1;
 
     }
 
@@ -344,15 +344,15 @@ sub error {
 
 sub add_item {
 
-    my $acc = shift;
+    my $self = shift;
 
-    my $get_ebay_items = {@_};
+    my $get_items = {@_};
 
     # Converts the all hash keys(e.g. itemID to itemid) to lower cases
 
     my %convert_LC;
 
-    tie %convert_LC => 'Hash::Case::Lower' => \%$get_ebay_items;
+    tie %convert_LC => 'Hash::Case::Lower' => \%$get_items;
 
     my $item_name = \%convert_LC;
 
@@ -437,7 +437,7 @@ sub add_item {
     $ship->setShippingServicePriority($shippingServicePriority);
     $pItem->getShippingDetails()->setShippingServiceOptions($ship);
 
-    my $categoryID = find_category( $title, $acc );
+    my $categoryID = find_category( $title, $self );
 
     my $pCat = eBay::API::XML::DataType::CategoryType->new();
     $pCat->setCategoryID($categoryID);
@@ -451,7 +451,7 @@ sub add_item {
 
     my $pCall = eBay::API::XML::Call::AddItem->new();
 
-    _account( $pCall, $acc );
+    _account( $pCall, $self );
 
     $pCall->setItem($pItem);
     $pCall->execute();
@@ -470,7 +470,7 @@ sub add_item {
 
             # print Dumper ($sShortMessage);
 
-            push @{ $acc->{error} },
+            push @{ $self->{error} },
               {
                 code          => $sErrorCode,
                 short_message => $sShortMessage,
@@ -487,7 +487,7 @@ sub add_item {
 
         my $sItemId = $pCall->getItemID()->getValue();
 
-        return $acc->{item_id} = $sItemId;
+        return $self->{item_id} = $sItemId;
 
     }
 
