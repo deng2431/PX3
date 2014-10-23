@@ -38,7 +38,7 @@ else {
 
     );
 }
-=pod
+
 $api->find_categories("laptop");
 
 if($api->list_categories){
@@ -50,13 +50,13 @@ if($api->list_categories){
  }
 }
 
-=cut
+
 # print $api->first_category;
 
-=pod
+=pod done
 $api->add_item(
 
-		title => 'test listing32',
+		title => "test listing70",
 		startPrice => 1.50,
 		quantity => 1,	
 		description =>'test listing',
@@ -79,9 +79,7 @@ $api->add_item(
 		shippingService=>'AU_Express',
 		ShippingServiceCost=> 3.0,
 		shippingServicePriority=>1,
-		# categoryID=>171788,
-		setThumbnail => "http://multi-medium.net/wp-content/uploads/2008/06/d90.jpg",
-		pictureurl => "http://multi-medium.net/wp-content/uploads/2008/06/d90.jpg"
+		# categoryID=>171788
 		
 
 	);
@@ -125,26 +123,27 @@ else {
     print "Fail";
 }
 =cut
-
-my $item_id = 301364396024;
+=pod
+my $item_id = 301350661073;
 
 
 
 $api->update_item(
 		itemId => $item_id,
-	    quantity => 7, 
+		setThumbnail => "http://multi-medium.net/wp-content/uploads/2008/06/d90.jpg",
+		pictureurl => "http://multi-medium.net/wp-content/uploads/2008/06/d90.jpg",
+		pictureurl1 => "http://www.ephotozine.com/articles/nikon-d5200-dslr-sample-photo-gallery-21069/images/highres-nikon-d5200-3_1357642698.jpg",
+	    quantity => 7, # <- can you please make sure that quantity is set?
 		description => "Testing testing",
-		startprice => 12.00,
-		title => 'test listing 78909',
-		conditioncode =>1000
-		
+		startprice => 12.00
 	);
 	
 	 # print Dumper ($api->error());
 	 
 	 my $chek2  = $api -> get_ack();
 	 
-	
+	 
+	 print Dumper ($chek2);
 	if($chek2){
 	print "update success!!";
 }else{	
@@ -160,5 +159,5 @@ $api->update_item(
  }
 	
 }
-
+=cut
 
