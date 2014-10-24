@@ -211,6 +211,19 @@ eBay user credentials get passed in and been assigned appropriate variables. Cre
 
         }
 
+=pod		
+=head2 C<add>
+
+add method() 
+
+this method accepts the following parameters:
+  
+
+
+=over
+
+=back	
+=cut
         sub delete_item {
 
             my $self = shift;
