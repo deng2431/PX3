@@ -38,19 +38,26 @@ else {
 
     );
 }
-=pod
-$api->find_categories("laptop");
 
-if($api->list_categories){
+$api->find_categories("tile");
 
- foreach my $io (@{$api->list_categories}){
+
+
+
+	 
+	
+	
+if($api->list_categories) {	
+	foreach my $io (@{$api->list_categories}){
 	
 	print $io->{cat_id}."\t".$io->{cat_name}."\n";
- 
- }
-}
+	}
+	
+}	
 
-=cut
+
+
+
 # print $api->first_category;
 
 =pod
@@ -129,7 +136,7 @@ $api->delete_item(
 
 	$count++;
  }
-=cut
+
 
 my $item_id = 301364396024;
 
@@ -166,4 +173,4 @@ $api->update_item(
 	
 }
 
-
+=cut

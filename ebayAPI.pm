@@ -5,6 +5,8 @@
     # Description...
     #
     # This module is strictly used for listing, update and delete items on eBay.
+	#
+	# Author .......................... Michael Deng
 ################################################################################
 
 
@@ -74,10 +76,6 @@ All of the eBay API calls are inherits from the eBay::API class
 	);
 	
 
-
-
-
-
 =head1 DESCRIPTION
 
 This document describes the installation, configuration, and usage of eBayAPI.pm module.
@@ -95,38 +93,18 @@ There's no installation for this module, but however there is prerequisite modul
 
 =over
 =item*
-	ebay::API - this module can be obtain from 'http://search.cpan.org/~tkeefer/eBay-API/lib/eBay/API.pm'.
+	eBay::API - this module can be obtain from 'http://search.cpan.org/~tkeefer/eBay-API/lib/eBay/API.pm'.
 
 =item *
+	Hash::Case::Lower - module can be obtain from 'http://search.cpan.org/~markov/Hash-Case-1.02/lib/Hash/Case/Lower.pod'
 	
+
+	Note: Two of the prerequisite module require to install eBay::API has been corrupted, those are LWP::Parallel and XML - Tidy, you can get a copy of those two modules from 'https://github.com/deng2431/PX3/tree/master/corrupted_modules_ebay-api' and follow the installtion instruction on those files.
 	
-
-
-
-
-
-
-
-
-
-
-=head1 METHODS
-
-=head2 new()
-
-store eBay user credentials, compatibility levels and site ID
-
-=over
-
 =back
 
+
 =cut
-
-
-
-
-
-
 
 
 
@@ -160,12 +138,14 @@ store eBay user credentials, compatibility levels and site ID
 # Variable Declarations
 # ------------------------------------------------------------------------------
 # Globals
+
         our $VERSION = "0.1";
+		
 
 =pod
-=head2 CallConstructor 
+=head1 Call Constructor 
 
-=head3 new()
+=head2 new()
 
 Object constructor for all api calls.
 
@@ -209,23 +189,6 @@ Arguments:
         }
 
         # Assigning eBay user credentials
-=head2 _account()
-
-eBay user credentials get passed in and been assigned appropriate variables. Credentials is then been assorted to the appropriate objects. 
-
-	    my $pCall = eBay::API::XML::Call::(AddItem,EndItem etc....)
-		
-			$pCall->setApiUrl($apiUrl);
-            $pCall->setDevID($devID);
-            $pCall->setAppID($appID);
-            $pCall->setCertID($cerID);
-            $pCall->setAuthToken($authToken);
-            $pCall->setSiteID($siteID);
-            $pCall->getCompatibilityLevel($complvl);
-
-
-
-=cut
         sub _account {
 
             # Get all arguments passed in
@@ -251,6 +214,41 @@ eBay user credentials get passed in and been assigned appropriate variables. Cre
 
         }
 
+
+=pod
+=head2 find_categories()
+
+Search eBay category system and return the best matching categories for the keyword/query. 
+
+Usage:
+
+	$object->find_categories("query")
+
+Return:
+
+once the call has been excuted it will return two properties upon successfuly result.
+
+$api->list_categories
+		
+			Return a hash of categories. Return 0 upon failure.
+				Hash Keys:
+					cat_id => Category ID 
+					cat_name => Category Name
+			
+				Example:
+					foreach my $cat (@{$api->list_categories}){
+					
+					$cat->{cat_id};
+					$cat->{cat_name};
+					
+					}
+
+$api->first_category
+	
+		Return the first category ID which contain the most suitable category for listing with the entered keyword/query. Return 0 upon failure.
+
+
+=cut		
         sub find_categories {
 
             my $self = shift;
@@ -264,12 +262,14 @@ eBay user credentials get passed in and been assigned appropriate variables. Cre
             $pCall->setQuery($query);
 
             $pCall->execute();
+			
+			
+			
+			 
 
-            my $count = $pCall->getCategoryCount();
+          my @cat_array = $pCall->getSuggestedCategoryArray()->getSuggestedCategory();
+		
 
-            my @cat_array = $pCall->getSuggestedCategoryArray()->getSuggestedCategory();
-
-            if (@cat_array) {
                 foreach my $cat_array1 (@cat_array) {
 
                     my $cat_name = $cat_array1->getCategory()->getCategoryName;
@@ -284,18 +284,13 @@ eBay user credentials get passed in and been assigned appropriate variables. Cre
 				#find the first category in the array, first contain the highest matching rate to the title query.
                 $self->{first_cat} = $cat_array[0]->getCategory()->getCategoryID;
 				
-				return $self->{first_cat}
-            }else{
-			
-				return 0;
-			}
-			
-				
+
+
 			# return 171788; # testing category ID. note: item title must be "test listing.."
 
         }
 
-        sub list_categories {
+sub list_categories {
 
             my $self = shift;
 
@@ -308,7 +303,7 @@ eBay user credentials get passed in and been assigned appropriate variables. Cre
 
         }
 
-        sub first_category {
+ sub first_category {
 
             my $self = shift;
 
