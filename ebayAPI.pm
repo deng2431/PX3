@@ -18,24 +18,94 @@ eBayAPI - An Simple Interface to XML::EBAY for listing, update and delete items 
 
 =head1 INHERITANCE
 
-All of the eBay API calls are inherits from the eBay::API::XML::BaseCall class
+All of the eBay API calls are inherits from the eBay::API class
 
 =head1 SYNOPSIS
 
-	$object->new();
-	
-	$object->add_item();
-	
-	$object->find_categories(.....);
+#1. Add eBay user credentials use 
 
-	$object->delete_item();
+	my $api = eBayAPI->new(
 	
-	$object->update_item();
+		apiUrl => 'API URL',
+        devID  => 'Developer ID',
+        appID  => 'Application ID',
+		....
+	
+	);
+	
+	
+#2. Add item to eBay listing 
+	
+	$api->add_item(
+	
+		title => 'Item Title',
+		startPrice => 'Item Price',
+		quantity => 'Item Quantity',	
+		description =>'Item Descriptionm',
+		.....
+	
+	);
+	
+	
+#3. Search for a list of categories matching the title query
+
+	$api->find_categories('Title Query');
+
+	
+	
+#4.  Updates eBay item thats currently been listed
+	
+	$api->update_item(
+	
+	itemID => "Item ID",
+	Quantity =>"Quantity No.",
+	.....
+	
+	);
+
+
+#5. Remove a item listing from eBay for various reasons
+	
+	$object->delete_item(
+	
+	itemId =>"Item ID",
+	end_reason =>"remove reason"
+	
+	);
+	
+
 
 
 
 
 =head1 DESCRIPTION
+
+This document describes the installation, configuration, and usage of eBayAPI.pm module.
+
+This modules contains classes from eBay::API module developed by Tim Keefer, it uses a handful of those class to develop a customise module that suits our client's need.
+
+
+
+=head1 INSTALLATION
+
+There's no installation for this module, but however there is prerequisite modules that is require to run this module.
+
+
+=head2 Prerequisite Module 
+
+=over
+=item*
+	ebay::API - this module can be obtain from 'http://search.cpan.org/~tkeefer/eBay-API/lib/eBay/API.pm'.
+
+=item *
+	
+	
+
+
+
+
+
+
 
 
 
@@ -92,7 +162,40 @@ store eBay user credentials, compatibility levels and site ID
 # Globals
         our $VERSION = "0.1";
 
-        # store eBay user credentials, compatibility levels and site ID
+=pod
+=head2 CallConstructor 
+
+=head3 new()
+
+Object constructor for all api calls.
+
+Usage:
+
+	ebayAPI->new({args})
+
+Arguments:	
+
+	A hash reference containing the following possible arguments:
+	
+		apiUrl => the url to the ebay api calls, it need to either the live ebay site('https://api.ebay.com/ws/api.dll') or ebay sandbox ('https://api.sandbox.ebay.com/ws/api.dll').
+		
+		devID = > Developer's ID, received from ebay developer's account that is linked to your ebay account.
+		
+		appID = > Application ID, received from ebay developer's account that is linked to your ebay account.
+		
+		certID = > certificate ID, received from ebay developer's account that is linked to your ebay account.
+		
+		authToken => authentication Token, a token that acts as a password to the linked ebay account, it can be received after the developer and ebay account is linked.
+		
+		siteID = > Site ID, the ebay country site that you want to use for the api calls. the site ID uses codes for recongnising is in numbers. e.g 0 = US site(.com) and 15 = AUS site(.com.au).
+		
+		complvl => compatibility level, the level of compatibility you want to test the api calls on, bear in mind not all api calls support the new compatibility and vice-versa.
+		
+		
+		
+
+
+=cut
         sub new {
 			
             my $class = shift;
@@ -177,11 +280,18 @@ eBay user credentials get passed in and been assigned appropriate variables. Cre
                       { cat_name => $cat_name, cat_id => $cat_id };
 
                 }
-
+				
+				#find the first category in the array, first contain the highest matching rate to the title query.
                 $self->{first_cat} = $cat_array[0]->getCategory()->getCategoryID;
-            }
+				
+				return $self->{first_cat}
+            }else{
 			
-			return 171788;
+				return 0;
+			}
+			
+				
+			# return 171788; # testing category ID. note: item title must be "test listing.."
 
         }
 
@@ -212,13 +322,30 @@ eBay user credentials get passed in and been assigned appropriate variables. Cre
         }
 
 =pod		
-=head2 C<add>
+=head2 delete_item()
 
-add method() 
+	Removes eBay listing 
 
-this method accepts the following parameters:
-  
+	
+Usage:
 
+=item *	
+
+	ebayAPI->new(args)
+	
+Arguments:
+
+=item * 
+
+	itemID => the item's ID requesting for removal
+	
+returns
+
+=item * 
+	1 = success
+
+=item *
+	0 = failure
 
 =over
 

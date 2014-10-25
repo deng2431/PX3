@@ -1,0 +1,15 @@
+do{ my $x = {
+       'build_requires' => {},
+       'test_requires' => {},
+       'conflicts' => {},
+       'requires' => {
+                       'Test::Pod::Coverage' => '0',
+                       'Math::BaseCnv' => '0',
+                       'Test' => '0',
+                       'XML::XPath::XMLParser' => '0',
+                       'XML::XPath' => '0',
+                       'Test::Pod' => '0'
+                     },
+       'recommends' => {}
+     };
+$x; }

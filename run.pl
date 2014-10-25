@@ -113,17 +113,22 @@ $api->delete_item(
     end_reason => "Incorrect"
 );
 
-my $chek1 = $api->get_ack();
+	 my $chek  = $api -> get_ack();
+	 
+	
+	if($chek){
+	print "update success!!";
+}else{	
 
-print Dumper ($chek1);
+	 
+	my $count = 1; 
+ foreach my $error (@{$api->error()}) {
+ 
+				print "\n\n";
+					print "\t ErrorCode: \t $error->{code} \n\n \t Error Short Message:  $error->{short_message}\n\n \t Error Long Message: \t$error->{long_message}\n";
 
-if ($chek1) {
-    print "delete success!!";
-}
-else {
-
-    print "Fail";
-}
+	$count++;
+ }
 =cut
 
 my $item_id = 301364396024;
