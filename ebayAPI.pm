@@ -91,18 +91,16 @@ There's no installation for this module, but however there is prerequisite modul
 
 =head2 Prerequisite Module 
 
-=over
-=item*
-	eBay::API - this module can be obtain from 'http://search.cpan.org/~tkeefer/eBay-API/lib/eBay/API.pm'.
 
-=item *
-	Hash::Case::Lower - module can be obtain from 'http://search.cpan.org/~markov/Hash-Case-1.02/lib/Hash/Case/Lower.pod'
+
+	* eBay::API - this module can be obtain from 'http://search.cpan.org/~tkeefer/eBay-API/lib/eBay/API.pm'.
+
+
+	* Hash::Case::Lower - module can be obtain from 'http://search.cpan.org/~markov/Hash-Case-1.02/lib/Hash/Case/Lower.pod'
 	
 
 	Note: Two of the prerequisite module require to install eBay::API has been corrupted, those are LWP::Parallel and XML - Tidy, you can get a copy of those two modules from 'https://github.com/deng2431/PX3/tree/master/corrupted_modules_ebay-api' and follow the installtion instruction on those files.
 	
-=back
-
 
 =cut
 
@@ -143,7 +141,7 @@ There's no installation for this module, but however there is prerequisite modul
 		
 
 =pod
-=head1 Call Constructor 
+=head1 SUBROUTINES
 
 =head2 new()
 
@@ -222,7 +220,7 @@ Search eBay category system and return the best matching categories for the keyw
 
 Usage:
 
-	$object->find_categories("query")
+	$api->find_categories("query")
 
 Return:
 
@@ -263,9 +261,6 @@ $api->first_category
 
             $pCall->execute();
 			
-			
-			
-			 
 
           my @cat_array = $pCall->getSuggestedCategoryArray()->getSuggestedCategory();
 		
@@ -284,6 +279,7 @@ $api->first_category
 				#find the first category in the array, first contain the highest matching rate to the title query.
                 $self->{first_cat} = $cat_array[0]->getCategory()->getCategoryID;
 				
+				return $self->{first_cat};
 
 
 			# return 171788; # testing category ID. note: item title must be "test listing.."
@@ -319,32 +315,23 @@ sub list_categories {
 =pod		
 =head2 delete_item()
 
-	Removes eBay listing 
+Remove an item from ebay listing that is currently active.
 
 	
 Usage:
 
-=item *	
-
-	ebayAPI->new(args)
+	$api->delete_item({args});
 	
 Arguments:
 
-=item * 
-
-	itemID => the item's ID requesting for removal
+	itemID => Item's ID requesting for removal
+	end_reason => "End Reason Code"
 	
-returns
+	Note: A list of end reason code is available at 'http://search.cpan.org/~tkeefer/eBay-API/lib/eBay/API/XML/DataType/Enum/EndReasonCodeType.pm'.
+	
+	
 
-=item * 
-	1 = success
 
-=item *
-	0 = failure
-
-=over
-
-=back	
 =cut
         sub delete_item {
 
@@ -401,6 +388,39 @@ returns
             }
 
         }
+
+
+=pod		
+=head2 update_item()
+
+Update an item from ebay listing that is currently active. An fee might occur for updating an item.
+
+	
+Usage:
+
+	$api->update_item({args});
+	
+Arguments:
+
+	itemID => Item's ID for updating
+	
+	title => alter the item's title
+	
+	quantity => update the available quantity for the item
+	
+	description => alter the description of the item
+	
+	startprice => change the item's price
+	
+	pictureurl => update the item's picture using external link.
+	
+	setthumbnail => change the item's thumbnail
+	
+	conditioncode => update the item condition, only input condition ID is exceptable. An list of ID is available at 'http://developer.ebay.com/Devzone/finding/CallRef/Enums/conditionIdList.html'
+	
+
+
+=cut		
 
         sub update_item {
 
@@ -535,7 +555,80 @@ returns
 
         }
 
-        sub add_item {
+      
+	  
+=pod		
+=head2 add_item()
+
+Add a item to eBay listing.
+
+	
+Usage:
+
+	$api->add_item({args});
+	
+Arguments:
+	
+	title => Name of the item as it appears in the listing or search results. Required for most items.
+	
+	quantity => Number of items in the listing
+	
+	description => Description of the item
+	
+	startprice => The original price of the item at listing.
+	
+	countryCode => Which country the item will be listed on. See link a list of country code: URL :  http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/countrycodetype.html
+	
+	currencyCode => The preferred currency for payment. See link a list of currency code: URL : http://developer.ebay.com/devzone/shopping/docs/callref/types/currencycodetype.html
+	
+	listingDuration => The amount of time the item will be listed on eBay. See link for available days. URL: http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/ListingDurationCodeType.html
+	
+	location => The location of the item.
+	
+	postalCode => post of the location which the item is located
+	
+	paymentMethod => Specific whicch payment method will be accepted. for a list of payment methods see url. URL: http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/BuyerPaymentMethodCodeType.html
+	
+	conditioncode => update the item condition, only input condition ID is exceptable. An list of ID is available at 'http://developer.ebay.com/Devzone/finding/CallRef/Enums/conditionIdList.html'
+	
+	dispatchTimeMax => The amount of time it will take for the item to be dispatched.
+	
+	listingType => The type of listing the item will be under, Buy it now or Auction. For a full list see url. URL: http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/ListingTypeCodeType.html
+	
+	payPalEmailAddress => THe paypal email that will be receiving the payments from the buyers, the paypal email musted be linked with the seller's eBay account.
+	
+	returnsAcceptedOption => Specific whether return is acceptable for the listing item.
+	
+	refundOption => Specific how will the refund be made if a item were to be returned.
+	
+	returnsWithinOption => The amount of time an item can be return to the seller.
+	
+	returnPolicyDetail => An description of what the return policy are.
+	
+	shippingCostPaidByOption => Specific who will paid for the return cost of the item.
+	
+	shippingType => The shipping cost model offered by the seller. For a full list of option see url. URL: http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/shippingtypecodetype.html
+	
+	shippingService => A shipping service used to ship an item. For a dfull list see url. URL: http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/ShippingServiceCodeType.html
+	
+	ShippingServiceCost => Specific the cose of the shipping service.
+	
+	shippingServicePriority => Specific whether this item will be shipped using priority service. code: 1 = Priority, 0 = non-Priority
+	
+	pictureurl => Set a item's picture using a external link
+	
+	setthumbnail => set the item's thumbnail using a external link
+	
+
+Return:
+
+	Item's ID upon success.
+
+
+=cut		
+	  
+	  
+	  sub add_item{
 
             my $self = shift;
 
@@ -593,14 +686,6 @@ returns
 
             };
 
-=pod
-		returnsacceptedoption	=> "getReturnPolicy()->setReturnsAcceptedOption",
-		refundoption	=> 'getReturnPolicy()->setRefundOption',
-		returnswithinoption	=> 'getReturnPolicy()->setReturnsWithinOption',
-		returnPolicydetail	=> 'getReturnPolicy()->setDescription',
-		shippingcostpaidbyoption	=> 'getReturnPolicy()->setShippingCostPaidByOption',
-		shippingtype	=> 'getShippingDetails()->setShippingType'
-=cut
 
             my $pItem = eBay::API::XML::DataType::ItemType->new();
 
@@ -635,8 +720,8 @@ returns
             $pItem->getShippingDetails()->setShippingServiceOptions($ship);
 			
 			
-			my $categoryID = 171788;
-            # my $categoryID = find_categories( $title, $self );
+			
+            my $categoryID = find_categories( $title, $self );
 
             my $pCat = eBay::API::XML::DataType::CategoryType->new();
 			
@@ -714,6 +799,38 @@ returns
             return $self->{item_id} if exists $self->{item_id};
 
         }
-
         # Return TRUE to Perl
         1;
+		
+=pod
+=head2 Common response (output) properties
+
+$api -> get_ack()
+
+	Return 1 for successful call and 0 for failure.
+	
+
+=head2 Common error properties
+
+$api->error()
+
+	Reutrn a hash reference of error code receive for failed calls.
+		Hash Keys: 
+			code - error code
+			short_message - brief message of the error
+			long_message - details message of the error
+			
+		Example:
+			 foreach my $error (@{$api->error()}) {
+			 
+				$error->{code}:
+				$error->{short_message}
+				$error->{long_message}
+			 
+			 }
+
+
+
+=cut	
+		
+		
