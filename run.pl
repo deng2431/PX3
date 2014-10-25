@@ -86,7 +86,6 @@ $api->add_item(
 		shippingService=>'AU_Express',
 		ShippingServiceCost=> 3.0,
 		shippingServicePriority=>1,
-		# categoryID=>171788,
 		setThumbnail => "http://multi-medium.net/wp-content/uploads/2008/06/d90.jpg",
 		pictureurl => "http://multi-medium.net/wp-content/uploads/2008/06/d90.jpg"
 		
