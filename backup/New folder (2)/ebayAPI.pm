@@ -5,9 +5,11 @@
     # Description...
     #
     # This module is strictly used for listing, update and delete items on eBay.
-    #
-    # Author .......................... Michael Deng
+	#
+	# Author .......................... Michael Deng
 ################################################################################
+
+
 
 # Package Declaration
 # ------------------------------------------------------------------------------
@@ -41,13 +43,14 @@
 # Globals
 
         our $VERSION = "0.1";
-
+		
+		
         sub new {
-
+			
             my $class = shift;
 
             my $self = {@_};
-
+			
             bless( $self, $class );
 
             return $self;
@@ -60,7 +63,7 @@
             # Get all arguments passed in
             my ( $pCall, $self ) = @_;
 
-        # Set local variables to strings been passed in to appropriate variables
+			# Set local variables to strings been passed in to appropriate variables
             my $apiUrl    = $self->{apiUrl};
             my $devID     = $self->{devID};
             my $appID     = $self->{appID};
@@ -80,6 +83,8 @@
 
         }
 
+
+		
         sub find_categories {
 
             my $self = shift;
@@ -93,31 +98,33 @@
             $pCall->setQuery($query);
 
             $pCall->execute();
+			
 
-            my @cat_array =
-              $pCall->getSuggestedCategoryArray()->getSuggestedCategory();
+          my @cat_array = $pCall->getSuggestedCategoryArray()->getSuggestedCategory();
+		
 
-            foreach my $cat_array1 (@cat_array) {
+                foreach my $cat_array1 (@cat_array) {
 
-                my $cat_name = $cat_array1->getCategory()->getCategoryName;
+                    my $cat_name = $cat_array1->getCategory()->getCategoryName;
 
-                my $cat_id = $cat_array1->getCategory()->getCategoryID;
+                    my $cat_id = $cat_array1->getCategory()->getCategoryID;
 
-                push @{ $self->{categories} },
-                  { cat_name => $cat_name, cat_id => $cat_id };
+                    push @{ $self->{categories} },
+                      { cat_name => $cat_name, cat_id => $cat_id };
 
-            }
+                }
+				
+				#find the first category in the array, first contain the highest matching rate to the title query.
+                $self->{first_cat} = $cat_array[0]->getCategory()->getCategoryID;
+				
+				return $self->{first_cat};
 
-#find the first category in the array, first contain the highest matching rate to the title query.
-            $self->{first_cat} = $cat_array[0]->getCategory()->getCategoryID;
 
-            return $self->{first_cat};
-
-# return 171788; # testing category ID. note: item title must be "test listing.."
+			# return 171788; # testing category ID. note: item title must be "test listing.."
 
         }
 
-        sub list_categories {
+sub list_categories {
 
             my $self = shift;
 
@@ -130,7 +137,7 @@
 
         }
 
-        sub first_category {
+ sub first_category {
 
             my $self = shift;
 
@@ -142,6 +149,7 @@
             }
 
         }
+
 
         sub delete_item {
 
@@ -199,11 +207,15 @@
 
         }
 
+
+		
+
         sub update_item {
 
             my $self = shift;
 
             my $get_items = {@_};
+
 
             # Converts the all hash keys(e.g. itemID to itemid) to lower cases
 
@@ -213,18 +225,14 @@
 
             my $item_name = \%convert_LC;
 
-            my $optional_fields = [
-                'title',      'description',
-                'startprice', 'quantity',
-                'conditioncode'
-            ];
+            my $optional_fields = [ 'title','description', 'startprice', 'quantity','conditioncode' ];
 
             my $method_map = {
-                title         => 'setTitle',
-                description   => 'setDescription',
-                startprice    => 'setStartPrice',
-                quantity      => 'setQuantity',
-                conditioncode => 'setConditionID',
+				title =>'setTitle',
+                description => 'setDescription',
+                startprice  => 'setStartPrice',
+                quantity    => 'setQuantity',
+				conditioncode =>'setConditionID',
             };
 
             my $pItem = eBay::API::XML::DataType::ItemType->new();
@@ -245,16 +253,18 @@
                     my $method    = $method_map->{$field};
                     $pItem->$method($item_name);
 
+
                 }
             }
 
-            my $getPicture = $item_name->{pictureurl};
+            my $getPicture  = $item_name->{pictureurl};
+           
 
             my $image = eBay::API::XML::DataType::PictureDetailsType->new();
 
             if ( defined $getPicture ) {
 
-                $image->setPictureURL($getPicture);
+                $image->setPictureURL( $getPicture);
 
             }
 
@@ -270,6 +280,9 @@
 
                 $pItem->setPictureDetails($image);
             }
+			
+		
+
 
             my $pCall = eBay::API::XML::Call::ReviseItem->new();
 
@@ -281,6 +294,8 @@
 
             my $hasErrors = $pCall->hasErrors();
 
+          
+
             if ($hasErrors) {
 
                 my $raErrors = $pCall->getErrors();
@@ -291,6 +306,7 @@
                     my $sShortMessage = $pError->getShortMessage();
                     my $sLongMessage  = $pError->getLongMessage();
 
+
                     push @{ $self->{error} },
                       {
                         code          => $sErrorCode,
@@ -298,6 +314,7 @@
                         long_message  => $sLongMessage
                       };
                 }
+
 
                 $self->{get_ack} = 0;
 
@@ -326,7 +343,10 @@
 
         }
 
-        sub add_item {
+      	
+	  
+	  
+	  sub add_item{
 
             my $self = shift;
 
@@ -384,6 +404,7 @@
 
             };
 
+
             my $pItem = eBay::API::XML::DataType::ItemType->new();
 
             foreach my $field ( @{$mandatory__fields} ) {
@@ -410,17 +431,18 @@
               ->setShippingCostPaidByOption($shippingCostPaidByOption);
             $pItem->getShippingDetails()->setShippingType($shippingType);
 
-            my $ship =
-              eBay::API::XML::DataType::ShippingServiceOptionsType->new();
+            my $ship = eBay::API::XML::DataType::ShippingServiceOptionsType->new();
             $ship->setShippingService($shippingService);
             $ship->setShippingServiceCost($shippingServiceCost);
             $ship->setShippingServicePriority($shippingServicePriority);
             $pItem->getShippingDetails()->setShippingServiceOptions($ship);
-
+			
+			
+			
             my $categoryID = find_categories( $title, $self );
 
             my $pCat = eBay::API::XML::DataType::CategoryType->new();
-
+			
             $pCat->setCategoryID($categoryID);
 
             $pItem->setPrimaryCategory($pCat);
@@ -467,6 +489,7 @@
                     my $sShortMessage = $pError->getShortMessage();
                     my $sLongMessage  = $pError->getLongMessage();
 
+
                     push @{ $self->{error} },
                       {
                         code          => $sErrorCode,
@@ -474,6 +497,7 @@
                         long_message  => $sLongMessage
                       };
                 }
+
 
                 return 0;
 
@@ -493,10 +517,9 @@
             return $self->{item_id} if exists $self->{item_id};
 
         }
-
         # Return TRUE to Perl
         1;
-
+		
 __END__
 
 
@@ -631,56 +654,56 @@ Usage:
 	
 Arguments:
 	
-		title => Name of the item as it appears in the listing or search results. Required for most items.
-		
-		quantity => Number of items in the listing
-		
-		description => Description of the item
-		
-		startprice => The original price of the item at listing.
-		
-		countryCode => Which country the item will be listed on. See link a list of country code: URL :  http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/countrycodetype.html
-		
-		currencyCode => The preferred currency for payment. See link a list of currency code: URL : http://developer.ebay.com/devzone/shopping/docs/callref/types/currencycodetype.html
-		
-		listingDuration => The amount of time the item will be listed on eBay. See link for available days. URL: http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/ListingDurationCodeType.html
-		
-		location => The location of the item.
-		
-		postalCode => post of the location which the item is located
-		
-		paymentMethod => Specific whicch payment method will be accepted. for a list of payment methods see url. URL: http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/BuyerPaymentMethodCodeType.html
-		
-		conditioncode => update the item condition, only input condition ID is exceptable. An list of ID is available at 'http://developer.ebay.com/Devzone/finding/CallRef/Enums/conditionIdList.html'
-		
-		dispatchTimeMax => The amount of time it will take for the item to be dispatched.
-		
-		listingType => The type of listing the item will be under, Buy it now or Auction. For a full list see url. URL: http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/ListingTypeCodeType.html
-		
-		payPalEmailAddress => THe paypal email that will be receiving the payments from the buyers, the paypal email musted be linked with the seller's eBay account.
-		
-		returnsAcceptedOption => Specific whether return is acceptable for the listing item.
-		
-		refundOption => Specific how will the refund be made if a item were to be returned.
-		
-		returnsWithinOption => The amount of time an item can be return to the seller.
-		
-		returnPolicyDetail => An description of what the return policy are.
-		
-		shippingCostPaidByOption => Specific who will paid for the return cost of the item.
-		
-		shippingType => The shipping cost model offered by the seller. For a full list of option see url. URL: http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/shippingtypecodetype.html
-		
-		shippingService => A shipping service used to ship an item. For a dfull list see url. URL: http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/ShippingServiceCodeType.html
-		
-		ShippingServiceCost => Specific the cose of the shipping service.
-		
-		shippingServicePriority => Specific whether this item will be shipped using priority service. code: 1 = Priority, 0 = non-Priority
-		
-		pictureurl => Set a item's picture using a external link
-		
-		setthumbnail => set the item's thumbnail using a external link
-		
+	title => Name of the item as it appears in the listing or search results. Required for most items.
+	
+	quantity => Number of items in the listing
+	
+	description => Description of the item
+	
+	startprice => The original price of the item at listing.
+	
+	countryCode => Which country the item will be listed on. See link a list of country code: URL :  http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/countrycodetype.html
+	
+	currencyCode => The preferred currency for payment. See link a list of currency code: URL : http://developer.ebay.com/devzone/shopping/docs/callref/types/currencycodetype.html
+	
+	listingDuration => The amount of time the item will be listed on eBay. See link for available days. URL: http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/ListingDurationCodeType.html
+	
+	location => The location of the item.
+	
+	postalCode => post of the location which the item is located
+	
+	paymentMethod => Specific whicch payment method will be accepted. for a list of payment methods see url. URL: http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/BuyerPaymentMethodCodeType.html
+	
+	conditioncode => update the item condition, only input condition ID is exceptable. An list of ID is available at 'http://developer.ebay.com/Devzone/finding/CallRef/Enums/conditionIdList.html'
+	
+	dispatchTimeMax => The amount of time it will take for the item to be dispatched.
+	
+	listingType => The type of listing the item will be under, Buy it now or Auction. For a full list see url. URL: http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/ListingTypeCodeType.html
+	
+	payPalEmailAddress => THe paypal email that will be receiving the payments from the buyers, the paypal email musted be linked with the seller's eBay account.
+	
+	returnsAcceptedOption => Specific whether return is acceptable for the listing item.
+	
+	refundOption => Specific how will the refund be made if a item were to be returned.
+	
+	returnsWithinOption => The amount of time an item can be return to the seller.
+	
+	returnPolicyDetail => An description of what the return policy are.
+	
+	shippingCostPaidByOption => Specific who will paid for the return cost of the item.
+	
+	shippingType => The shipping cost model offered by the seller. For a full list of option see url. URL: http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/shippingtypecodetype.html
+	
+	shippingService => A shipping service used to ship an item. For a dfull list see url. URL: http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/ShippingServiceCodeType.html
+	
+	ShippingServiceCost => Specific the cose of the shipping service.
+	
+	shippingServicePriority => Specific whether this item will be shipped using priority service. code: 1 = Priority, 0 = non-Priority
+	
+	pictureurl => Set a item's picture using a external link
+	
+	setthumbnail => set the item's thumbnail using a external link
+	
 
 Return:
 
