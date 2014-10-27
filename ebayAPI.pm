@@ -527,7 +527,7 @@ All of the eBay API calls are inherits from the eBay::API class
 	$api->add_item(
 	
 		title => 'Item Title',
-		startPrice => 'Item Price',
+		startprice => 'Item Price',
 		quantity => 'Item Quantity',	
 		description =>'Item Descriptionm',
 		.....
