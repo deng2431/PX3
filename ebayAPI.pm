@@ -556,8 +556,8 @@ All of the eBay API calls are inherits from the eBay::API class
 	
 	$object->delete_item(
 	
-	itemId =>"Item ID",
-	end_reason =>"remove reason"
+	itemId => "Item ID",
+	end_reason => "remove reason"
 	
 	);
 	
@@ -578,10 +578,12 @@ There's no installation for this module, but however there is prerequisite modul
 =head2 Prerequisite Module 
 
 
+=item *
 
-	* eBay::API - this module can be obtain from 'http://search.cpan.org/~tkeefer/eBay-API/lib/eBay/API.pm'.
+	 eBay::API - this module can be obtain from 'http://search.cpan.org/~tkeefer/eBay-API/lib/eBay/API.pm'.
 
 
+=back
 	* Hash::Case::Lower - module can be obtain from 'http://search.cpan.org/~markov/Hash-Case-1.02/lib/Hash/Case/Lower.pod'
 	
 
@@ -639,43 +641,43 @@ Arguments:
 		
 		startprice => The original price of the item at listing.
 		
-		countryCode => Which country the item will be listed on. See link a list of country code: URL :  http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/countrycodetype.html
+		countrycode => Which country the item will be listed on. See link a list of country code: URL :  http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/countrycodetype.html
 		
-		currencyCode => The preferred currency for payment. See link a list of currency code: URL : http://developer.ebay.com/devzone/shopping/docs/callref/types/currencycodetype.html
+		currencycode => The preferred currency for payment. See link a list of currency code: URL : http://developer.ebay.com/devzone/shopping/docs/callref/types/currencycodetype.html
 		
-		listingDuration => The amount of time the item will be listed on eBay. See link for available days. URL: http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/ListingDurationCodeType.html
+		listingduration => The amount of time the item will be listed on eBay. See link for available days. URL: http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/ListingDurationCodeType.html
 		
 		location => The location of the item.
 		
-		postalCode => post of the location which the item is located
+		postalcode => post of the location which the item is located
 		
-		paymentMethod => Specific whicch payment method will be accepted. for a list of payment methods see url. URL: http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/BuyerPaymentMethodCodeType.html
+		paymentmethod => Specific whicch payment method will be accepted. for a list of payment methods see url. URL: http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/BuyerPaymentMethodCodeType.html
 		
 		conditioncode => update the item condition, only input condition ID is exceptable. An list of ID is available at 'http://developer.ebay.com/Devzone/finding/CallRef/Enums/conditionIdList.html'
 		
-		dispatchTimeMax => The amount of time it will take for the item to be dispatched.
+		dispatchtimemax => The amount of time it will take for the item to be dispatched.
 		
-		listingType => The type of listing the item will be under, Buy it now or Auction. For a full list see url. URL: http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/ListingTypeCodeType.html
+		listingtype => The type of listing the item will be under, Buy it now or Auction. For a full list see url. URL: http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/ListingTypeCodeType.html
 		
-		payPalEmailAddress => THe paypal email that will be receiving the payments from the buyers, the paypal email musted be linked with the seller's eBay account.
+		payPalemailaddress => THe paypal email that will be receiving the payments from the buyers, the paypal email musted be linked with the seller's eBay account.
 		
-		returnsAcceptedOption => Specific whether return is acceptable for the listing item.
+		returnsacceptedoption => Specific whether return is acceptable for the listing item.
 		
-		refundOption => Specific how will the refund be made if a item were to be returned.
+		refundoption => Specific how will the refund be made if a item were to be returned.
 		
-		returnsWithinOption => The amount of time an item can be return to the seller.
+		returnswithinoption => The amount of time an item can be return to the seller.
 		
-		returnPolicyDetail => An description of what the return policy are.
+		returnpolicydetail => An description of what the return policy are.
 		
-		shippingCostPaidByOption => Specific who will paid for the return cost of the item.
+		shippingcostpaidbyoption => Specific who will paid for the return cost of the item.
 		
-		shippingType => The shipping cost model offered by the seller. For a full list of option see url. URL: http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/shippingtypecodetype.html
+		shippingtype => The shipping cost model offered by the seller. For a full list of option see url. URL: http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/shippingtypecodetype.html
 		
-		shippingService => A shipping service used to ship an item. For a dfull list see url. URL: http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/ShippingServiceCodeType.html
+		shippingservice => A shipping service used to ship an item. For a dfull list see url. URL: http://developer.ebay.com/devzone/xml/docs/reference/ebay/types/ShippingServiceCodeType.html
 		
-		ShippingServiceCost => Specific the cose of the shipping service.
+		Shippingservicecost => Specific the cose of the shipping service.
 		
-		shippingServicePriority => Specific whether this item will be shipped using priority service. code: 1 = Priority, 0 = non-Priority
+		shippingservicepriority => Specific whether this item will be shipped using priority service. code: 1 = Priority, 0 = non-Priority
 		
 		pictureurl => Set a item's picture using a external link
 		
