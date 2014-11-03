@@ -136,7 +136,7 @@ my ($q) = @_;
 	my $pic_url = $q->param('pic_url');
 	my $ship_price = $q->param('ship_price');
 	
-
+my $url = $api->get_item_url(id => $item_id);
 	$api->update_item(
 		itemId => $item_id,
 	    quantity => $quan, 
@@ -152,10 +152,10 @@ my ($q) = @_;
 	 
 	 my $chek2  = $api -> get_ack();
 	 
-	 
+
 
 	if($chek2){
-	    	print "The item <b>$title</b> has been updated successfully eBay Listing.";
+	    	print "The item <b>$title</b> has been updated successfully eBay Listing. <a href=\"$url\">See Listing</a> ";
 	print $q->start_form(
             -name => 'main',
             -method => 'POST',
@@ -163,7 +163,7 @@ my ($q) = @_;
 		print $q->start_table;
 		print $q->Tr($q->td());print $q->Tr($q->td());
 			 print $q->Tr($q->td());
-			 print $q->Tr($q->td($q->submit(-name=>'form2',-value => '<< Back')));
+			 print $q->Tr($q->td($q->submit(-class=>"btn btn-default",-name=>'form2',-value => '<< Back')));
 
 	print $q->end_table;
 	print $q->end_form();
@@ -240,18 +240,18 @@ my ($q) = @_;
 	print $q -> hidden('hid_item_id',$item_id);
     print $q->start_table;
     print $q->Tr( $q->td('<b>Title:</b>'),
-        $q->td( $q->textfield( -name => "item_title", -size => 30, -value => $name ) ) );
+        $q->td( $q->textfield(-class=>'form-control', -name => "item_title", -size => 30, -value => $name ) ) );
 
     print $q->Tr( $q->td('<b>Price:</b>'),
-        $q->td( $q->textfield( -name => "item_price", -size => 30,-value => $price ) ) );
+        $q->td( $q->textfield(-class=>'form-control', -name => "item_price", -size => 30,-value => $price ) ) );
     print $q->Tr( $q->td('<b>Quantity:</b>'),
-        $q->td( $q->textfield( -name => "item_quantity", -size => 30,-value =>$quan ) ) );
+        $q->td( $q->textfield( -class=>'form-control',-name => "item_quantity", -size => 30,-value =>$quan ) ) );
 
     my %item_condit = ( '1000' => 'New', '3000' => 'Used' );
     print $q->Tr(
         $q->td('<b>Condition:</b>'),
         $q->td(
-            $q->popup_menu(
+            $q->popup_menu(-style=>'float: left;',
                 -name   => 'condition',
                 -values => [ keys %item_condit ],
                 -labels => \%item_condit,
@@ -273,16 +273,17 @@ my ($q) = @_;
     );
 
 	print $q->Tr( $q->td('<b>Shipping Price:</b>'),
-        $q->td( $q->textfield( -name => "ship_price", -size => 30, -value => $ship_price ) ) );
+        $q->td( $q->textfield(-class=>'form-control', -name => "ship_price", -size => 30, -value => $ship_price ) ) );
 		
 		
 	print $q->Tr( $q->td('<b>Picture URL:</b>'),
-        $q->td( $q->textfield( -name => "pic_url", -size => 30, -value => $pic_url ) ) );
-	
-    print $q->Tr( 
-	$q->td(),$q->td($q->submit( -name=>'form2',-value => '<< Back ')),
+        $q->td( $q->textfield(-class=>'form-control', -name => "pic_url", -size => 30, -value => $pic_url ) ) );
+	print $q->Tr($q->td());
+	print $q->Tr($q->td());
+	print $q->Tr($q->td());
+    print $q->Tr($q->td($q->submit(-class=>"btn btn-default", -name=>'form2',-value => '<< Back ')),$q->td(),
 
-        $q->td($q->submit( -name=>'excute_update',-value => 'Update Item' )) );
+        $q->td($q->submit(-class=>"btn btn-default", -name=>'excute_update',-value => 'Update Item' )) );
 
     print $q->end_table;
 	
@@ -330,7 +331,7 @@ if ($chek1) {
 		print $q->start_table;
 		print $q->Tr($q->td());print $q->Tr($q->td());
 			 print $q->Tr($q->td());
-			 print $q->Tr($q->td($q->submit(-name=>'form2',-value => '<< Back')));
+			 print $q->Tr($q->td($q->submit(-class=>"btn btn-default",-name=>'form2',-value => '<< Back')));
 
 	print $q->end_table;
 	print $q->end_form();
@@ -426,8 +427,8 @@ print $q->Tr($q->td());print $q->Tr($q->td());
 			   print $q->Tr(
 			   $q->td(),
 			   $q->td(),
-          $q->td($q->submit(-name=>'form2', -value => 'Cancel' )),
-		   $q->td($q->submit(-name=>'end_item', -value => 'Delete' ))
+          $q->td($q->submit(-class=>"btn btn-default",-name=>'form2', -value => 'Cancel' )),
+		   $q->td($q->submit(-class=>"btn btn-default",-name=>'end_item', -value => 'Delete' ))
 			);
 
    print $q->end_table;
@@ -452,8 +453,7 @@ print $q->Tr($q->td());print $q->Tr($q->td());
 		   print $q->Tr(
           $q->td(),
 		   $q->td(),
-		    $q->td(),
-          $q->td($q->submit(-name=>'form2',-value => 'Update/Delete Item'),
+          $q->td($q->submit(-class=>"btn btn-default",-name=>'form2',-value => 'Update/Delete Item'),
 		  
 		  
 		  )
@@ -503,10 +503,10 @@ sub update{
 		 print $q->Tr(
 		 
 		 $q->td('<b>Select Item:</b>'),
-		 $q->td( $q->scrolling_list(-name=>'item_list',
+		 $q->td( $q->scrolling_list(-name=>'item_list',-style=>'width:250px;',
 				-values=>\@item_id,
-				
-				-size=>10,
+				-class=>"form-control",
+				-size=>11,
 				-labels=>\%item_name,
 			# -attributes=>\%attributes
 			)
@@ -521,11 +521,11 @@ sub update{
 		print $q->Tr($q->td());
 
 		print $q->Tr( 
-		$q->td($q->submit( -value => '<< Back' )),
-		$q->td($q->submit(-name=>'update_btn', -value => 'Update Item' )),
+		$q->td($q->submit(-class=>"btn btn-default", -value => '<< Back' )),
+		$q->td($q->submit(-class=>"btn btn-default",-name=>'update_btn', -value => 'Update Item' )),
 		
 
-        $q->td($q->submit(-name=>'delete_btn', -value => 'Delete Item' )));
+        $q->td($q->submit(-class=>"btn btn-default",-name=>'delete_btn', -value => 'Delete Item' )));
 		
 		 print $q->end_table;
 		 
@@ -605,7 +605,9 @@ if ($api->get_item_id()){
 
  my $item_id =  $api->get_item_id();
 
-
+	my $url = $api->get_item_url(id => $item_id);
+	
+	# print $url;
  
 		print $q->h3("Item Details");
 	
@@ -616,6 +618,7 @@ if ($api->get_item_id()){
 	 print $q->start_table;
 	 
   print "<blockquote>  Item has been Successfully added on eBay Listing.</blockquote>";
+  print "<a href=\"$url\"><blockquote> See Item listing on eBay</blockquote></a>";
 print $q->Tr($q->td());print $q->Tr($q->td());
 			 print $q->Tr($q->td());print $q->Tr($q->td());
 	print $q->Tr(
@@ -660,7 +663,7 @@ print $q->Tr($q->td());print $q->Tr($q->td());
 			print $q->Tr($q->td());
 			   print $q->Tr(
 			   
-          $q->td($q->submit( -value => 'List New Item' )),$q->td($q->submit(-name=>'form2', -value => 'Update/Delete Item' ))
+          $q->td($q->submit(-class=>"btn btn-default", -value => 'List New Item' )),$q->td($q->submit(-name=>'form2', -value => 'Update/Delete Item' ))
 			);
 
    print $q->end_table;
@@ -760,7 +763,8 @@ print $q->start_table;
 
    print $q->Tr( $q->td('<b>Chose a Category: </b>'),
 
-        $q->td( $q->popup_menu(
+        $q->td( $q->popup_menu(-style=>'width:280px;',
+		 -class=>"form-control",
             -name    => 'categories',
             -values  => \@cat_id,
             -labels  => \%cat_name
@@ -771,9 +775,9 @@ print $q->start_table;
 		print $q->Tr($q->td());
 		print $q->Tr($q->td());
 		print $q->Tr($q->td());
-		print $q->Tr( $q->td($q->submit( -value => '<< Back' )),$q->td(),
+		print $q->Tr( $q->td($q->submit(-class=>"btn btn-default", -value => '<< Back' )),$q->td(),
 
-        $q->td($q->submit(-name=>'submit_list_btn', -value => 'Add Listing' )));
+        $q->td($q->submit(-class=>"btn btn-default",-name=>'submit_list_btn', -value => 'Add Listing' )));
 
 		 
 		print $q->end_table;
@@ -784,14 +788,12 @@ print $q->start_table;
 }
 
 
-
-
 sub output_top {
     my ($q,$h2) = @_;
     print $q->start_html(
         -title   => 'eBay API',
         -bgcolor => 'white',
-        -style   => {
+        -style   => {-src=>['https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css','https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css'],
             -code => '
                     /* Stylesheet code */
                     body {
@@ -800,6 +802,7 @@ sub output_top {
 						margin-right:auto;
 						height:auto;
 						width:800px;
+						background-color:#b0c4de;
                     }
                     h2 {
                         color: darkblue;
@@ -824,8 +827,9 @@ sub output_top {
 						float: left;
 						text-align: right;
 						display: block;
-						width: 180px;
+						width: 220px;
                     }
+					
 					
                     /* End Stylesheet code */
                 ',
@@ -855,18 +859,18 @@ sub output_form {
 	print $q->Tr($q->td());print $q->Tr($q->td());
 			 print $q->Tr($q->td());print $q->Tr($q->td());
     print $q->Tr( $q->td('<b>Title:</b>'),
-        $q->td( $q->textfield( -name => "item_title", -size => 30, -value => 'Laptop AUS' ) ) );
+        $q->td( $q->textfield( -class=>'form-control',-name => "item_title", -size => 30, -value => 'Laptop AUS' ) ) );
 
     print $q->Tr( $q->td('<b>Price:</b>'),
-        $q->td( $q->textfield( -name => "item_price", -size => 30,-value => '12.90' ) ) );
+        $q->td( $q->textfield(-class=>'form-control', -name => "item_price", -size => 30,-value => '12.90' ) ) );
     print $q->Tr( $q->td('<b>Quantity:</b>'),
-        $q->td( $q->textfield( -name => "item_quantity", -size => 30,-value => '4' ) ) );
+        $q->td( $q->textfield(-class=>'form-control', -name => "item_quantity", -size => 30,-value => '4' ) ) );
 
     my %item_condit = ( '1000' => 'New', '3000' => 'Used' );
     print $q->Tr(
         $q->td('<b>Condition:</b>'),
         $q->td(
-            $q->popup_menu(
+            $q->popup_menu(-style=>'float: left;',
                 -name   => 'condition',
                 -values => [ keys %item_condit ],
                 -labels => \%item_condit,
@@ -883,22 +887,23 @@ sub output_form {
                 -value => 'this is just testing',
                 -cols  => 40,
                 -rows  => 6,
+
             )
         )
     );
 
 	print $q->Tr( $q->td('<b>Shipping Price:</b>'),
-        $q->td( $q->textfield( -name => "ship_price", -size => 30, -value => '5.50' ) ) );
+        $q->td( $q->textfield(-class=>'form-control', -name => "ship_price", -size => 30, -value => '5.50' ) ) );
 		
 		
 	print $q->Tr( $q->td('<b>Picture URL:</b>'),
-        $q->td( $q->textfield( -name => "pic_url", -size => 30, -value => 'http://multi-medium.net/wp-content/uploads/2008/06/d90.jpg' ) ) );
+        $q->td( $q->textfield(-class=>'form-control', -name => "pic_url", -size => 30, -value => 'http://multi-medium.net/wp-content/uploads/2008/06/d90.jpg' ) ) );
 	print $q->Tr($q->td());print $q->Tr($q->td());
 			 print $q->Tr($q->td());print $q->Tr($q->td());
     print $q->Tr( $q->td(  ),
 	$q->td(),
 
-        $q->td($q->submit( -name=>'form1',-value => 'Continue>>' )) );
+        $q->td($q->submit(-class=>"btn btn-default", -name=>'form1',-value => 'Continue' )) );
 
     print $q->end_table;
 	
@@ -919,7 +924,7 @@ sub delete_top {
     print $q->start_html(
         -title   => 'eBay API',
         -bgcolor => 'white',
-        -style   => {
+        -style   => {-src=>['https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css','https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css'],
             -code => '
                     /* Stylesheet code */
                     body {
@@ -928,6 +933,8 @@ sub delete_top {
 						margin-right:auto;
 						height:auto;
 						width:800px;
+						background-color:#b0c4de;
+						
                     }
                     h2 {
                         color: darkblue;
@@ -937,8 +944,8 @@ sub delete_top {
                     div {
                         text-align: right;
                         color: steelblue;
-                        border-top: darkblue 1pt solid;
                         margin-top: 4pt;
+						 border-top: darkblue 1pt solid;
                     }
                     th {
                         text-align: right;
