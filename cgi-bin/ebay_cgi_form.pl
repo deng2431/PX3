@@ -14,7 +14,7 @@ use Data::Dumper;
 # ./eBayAPI.pm
 my $production_live = 1;
 my $api;
-if ( $production_live == 1 ) {
+if ( $production_live == 0 ) {
     $api = eBayAPI->new(
 
         apiUrl => 'https://api.ebay.com/ws/api.dll',
@@ -80,7 +80,7 @@ print $q->header();
 	
 	}elsif ( $q->param('submit_list_btn') ) {
  
-      output_top($q,$h2_add);
+      delete_top2($q);
 		print $q->div({ -id => "div-test" });
 		call_api($q);
         # Parameters are defined, therefore the form has been submitted
@@ -163,7 +163,7 @@ my $url = $api->get_item_url(id => $item_id);
 
 
 	if($chek2){
-	    	print "The item <b>$title</b> has been updated successfully eBay Listing. <a href=\"$url\">See Listing</a> ";
+	    	print "<p>The item <b>$title</b> has been updated successfully eBay Listing. <a href=\"$url\">See Listing</a></p> ";
 	print $q->start_form(
             -name => 'main',
             -method => 'POST',
@@ -171,7 +171,7 @@ my $url = $api->get_item_url(id => $item_id);
 		print $q->start_table;
 		print $q->Tr($q->td());print $q->Tr($q->td());
 			 print $q->Tr($q->td());
-			 print $q->Tr($q->td($q->submit(-class=>"btn btn-default",-name=>'form2',-value => '<< Back')));
+			 print $q->Tr($q->td(),$q->td($q->submit(-class=>"btn btn-default",-name=>'form2',-value => '<< Back')));
 
 	print $q->end_table;
 	print $q->end_form();
@@ -331,7 +331,7 @@ my $chek1 = $api->get_ack();
 # print Dumper ($chek1);
 
 if ($chek1) {
-    	print "The item <b>$name</b> was successfully removed from eBay Listing.";
+    	print "<p>The item <b>$name</b> was successfully removed from eBay Listing.</p>";
 	print $q->start_form(
             -name => 'main',
             -method => 'POST',
@@ -339,7 +339,7 @@ if ($chek1) {
 		print $q->start_table;
 		print $q->Tr($q->td());print $q->Tr($q->td());
 			 print $q->Tr($q->td());
-			 print $q->Tr($q->td($q->submit(-class=>"btn btn-default",-name=>'form2',-value => '<< Back')));
+			 print $q->Tr($q->td(),$q->td($q->submit(-class=>"btn btn-default",-name=>'form2',-value => '<< Back')));
 
 	print $q->end_table;
 	print $q->end_form();
@@ -617,7 +617,7 @@ if ($api->get_item_id()){
 	
 	# print $url;
  
-		print $q->h3("Item Details");
+		
 	
 	print $q->start_form(
             -name => 'main',
@@ -625,8 +625,8 @@ if ($api->get_item_id()){
         );
 	 print $q->start_table;
 	 
-  print "<blockquote>  Item has been Successfully added on eBay Listing.</blockquote>";
-  print "<a href=\"$url\"><blockquote> See Item listing on eBay</blockquote></a>";
+ 
+  print $q->h3("Item Details");
 print $q->Tr($q->td());print $q->Tr($q->td());
 			 print $q->Tr($q->td());print $q->Tr($q->td());
 	print $q->Tr(
@@ -664,14 +664,18 @@ print $q->Tr($q->td());print $q->Tr($q->td());
 			 print $q->Tr($q->td());print $q->Tr($q->td());
 			 print $q->Tr($q->td());print $q->Tr($q->td());
    print $q->end_table;
- 
+   
+
+   
+  print "<p>  Item has been Successfully added on eBay Listing.</p>";
+  print "<a href=\"$url\"><p> See Item listing on eBay<p></a>";
    print $q->start_table;
  
 			print $q->Tr($q->td());
 			print $q->Tr($q->td());
 			   print $q->Tr(
 			   
-          $q->td($q->submit(-class=>"btn btn-default", -value => 'List New Item' )),$q->td($q->submit(-name=>'form2', -value => 'Update/Delete Item' ))
+          $q->td($q->submit(-class=>"btn btn-default", -value => 'List New Item' )),$q->td($q->submit(-class=>"btn btn-default",-name=>'form2', -value => 'Update/Delete Item' ))
 			);
 
    print $q->end_table;
@@ -827,6 +831,19 @@ sub output_top {
 	font-weight: bold;
 	padding-top:70px;
                     }
+					h3{
+					padding-left:300px;
+					  font-family: times, Times New Roman, times-roman, georgia, serif;
+		font-size: 35px;
+	        line-height: 40px;
+	        letter-spacing: -1px;
+		color: #444;
+		margin: 0 0 0 0;
+		text-decoration: underline;
+
+                font-weight: 100;
+
+					}
                   
                     th {
                         text-align: right;
@@ -853,6 +870,12 @@ sub output_top {
     -webkit-box-shadow: 0 0 2px black;
     box-shadow: 0 0 2px black;
 					
+					}
+					p
+					{
+					padding-left:100px;
+					padding-top:50px;
+					padding-bottom:30px;
 					}
 					
 					
@@ -962,6 +985,12 @@ sub delete_top {
 						background-color:#b0c4de;
 						
                     }
+					p
+					{
+					padding-left:100px;
+					padding-top:50px;
+					padding-bottom:30px;
+					}
                     h2 {
                         color: darkblue;
                         border-bottom: 1pt solid;
@@ -1023,5 +1052,86 @@ sub delete_top {
     );
     print $q->h2("Delete eBay Item");
 }
+sub delete_top2 {
+    my ($q) = @_;
+    print $q->start_html(
+        -title   => 'eBay API',
+        -bgcolor => 'white',
+        -style   => {-src=>['https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css','https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css'],
+            -code => '
+                    /* Stylesheet code */
+                    body {
+                        font-family: verdana, sans-serif;
+						margin-left:auto;
+						margin-right:auto;
+						height:auto;
+						width:800px;
+						background-color:#b0c4de;
+						
+                    }
+                    h2 {
+                        color: darkblue;
+                        border-bottom: 1pt solid;
+                        width: 100%;
+						 font-family: times, Times New Roman, times-roman, georgia, serif;
+	color: #444;
+	margin: 0;
+	padding: 0px 0px 6px 0px;
+	font-size: 40px;
+	line-height: 44px;
+	letter-spacing: -2px;
+	font-weight: bold;
+	padding-top:70px;
+						
+                    }
+					h3{
+					padding-left:300px;
+					  font-family: times, Times New Roman, times-roman, georgia, serif;
+		font-size: 35px;
+	        line-height: 40px;
+	        letter-spacing: -1px;
+		color: #444;
+		margin: 0 0 0 0;
+		text-decoration: underline;
 
+                font-weight: 100;
+
+					}
+                  
+                    th {
+                        text-align: right;
+                        padding: 2pt;
+                        vertical-align: top;
+						
+                    }
+                    td {
+                        padding: 2pt;
+                        vertical-align: top;
+						float: left;
+						text-align: right;
+						display: block;
+						width: 280px;
+                    }
+					#div-test{
+					height:auto;
+					width:800px;
+					background-color:#ffffff;
+					color:#000000;
+					padding-bottom:20px;
+					padding-top:20px;
+					-moz-box-shadow: 0 0 2px black;
+    -webkit-box-shadow: 0 0 2px black;
+    box-shadow: 0 0 2px black;
+					
+					}
+					p
+					{
+					padding-left:100px;
+					}
+                    /* End Stylesheet code */
+                ',
+        },
+    );
+    print $q->h2("Add eBay Listing");
+}
 1;
