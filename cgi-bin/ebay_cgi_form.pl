@@ -70,35 +70,41 @@ print $q->header();
 	
   if ($q->param('form1')) {
         output_top($q,$h2_add);
+		print $q->div({ -id => "div-test" });
         display_results($q);
 		
     } elsif($q->param('form2')){
 	output_top($q,$h2_opt);
+	print $q->div({ -id => "div-test" });
 	update($q);
 	
 	}elsif ( $q->param('submit_list_btn') ) {
  
       output_top($q,$h2_add);
-		
+		print $q->div({ -id => "div-test" });
 		call_api($q);
         # Parameters are defined, therefore the form has been submitted
         # print $pi;
 
     }elsif($q->param('delete_btn')){
 	delete_top($q);
+	print $q->div({ -id => "div-test" });
 	delete_item($q);
 	
 	}elsif($q->param('end_item')){
 	output_top($q,$h2_del);
+	print $q->div({ -id => "div-test" });
 	end_item($q);
 	
 	
 		}elsif($q->param('update_btn')){
 	output_top($q,$h2_update);
+	print $q->div({ -id => "div-test" });
 	update_item_form($q);
 	
 	}elsif($q->param('excute_update')){
 	output_top($q,$h2_update);
+	print $q->div({ -id => "div-test" });
 	excute_update($q);
 	
 	}
@@ -108,8 +114,10 @@ print $q->header();
 	else {
 	
 	output_top($q,$h2_add);
+		print $q->div({ -id => "div-test" });
     lol($q);
     output_form($q);
+	
 }
 
 # Output footer and end html
@@ -803,18 +811,23 @@ sub output_top {
 						height:auto;
 						width:800px;
 						background-color:#b0c4de;
+						font-color:#000000;
                     }
                     h2 {
                         color: darkblue;
                         border-bottom: 1pt solid;
                         width: 100%;
+						 font-family: times, Times New Roman, times-roman, georgia, serif;
+	color: #444;
+	margin: 0;
+	padding: 0px 0px 6px 0px;
+	font-size: 40px;
+	line-height: 44px;
+	letter-spacing: -2px;
+	font-weight: bold;
+	padding-top:70px;
                     }
-                    div {
-                        text-align: right;
-                        color: steelblue;
-                        border-top: darkblue 1pt solid;
-                        margin-top: 4pt;
-                    }
+                  
                     th {
                         text-align: right;
                         padding: 2pt;
@@ -829,6 +842,18 @@ sub output_top {
 						display: block;
 						width: 220px;
                     }
+					#div-test{
+					height:auto;
+					width:800px;
+					background-color:#ffffff;
+					color:#000000;
+					padding-bottom:20px;
+					padding-top:20px;
+					-moz-box-shadow: 0 0 2px black;
+    -webkit-box-shadow: 0 0 2px black;
+    box-shadow: 0 0 2px black;
+					
+					}
 					
 					
                     /* End Stylesheet code */
@@ -914,7 +939,8 @@ sub output_form {
 
 sub output_end {
     my ($q) = @_;
-    print $q->div("eBay API Form");
+  
+
     print $q->end_html;
 }
 
@@ -940,13 +966,31 @@ sub delete_top {
                         color: darkblue;
                         border-bottom: 1pt solid;
                         width: 100%;
+						 font-family: times, Times New Roman, times-roman, georgia, serif;
+	color: #444;
+	margin: 0;
+	padding: 0px 0px 6px 0px;
+	font-size: 40px;
+	line-height: 44px;
+	letter-spacing: -2px;
+	font-weight: bold;
+	padding-top:70px;
+						
                     }
-                    div {
-                        text-align: right;
-                        color: steelblue;
-                        margin-top: 4pt;
-						 border-top: darkblue 1pt solid;
-                    }
+					h3{
+					padding-left:300px;
+					  font-family: times, Times New Roman, times-roman, georgia, serif;
+		font-size: 35px;
+	        line-height: 40px;
+	        letter-spacing: -1px;
+		color: #444;
+		margin: 0 0 0 0;
+		text-decoration: underline;
+
+                font-weight: 100;
+
+					}
+                  
                     th {
                         text-align: right;
                         padding: 2pt;
@@ -961,7 +1005,18 @@ sub delete_top {
 						display: block;
 						width: 280px;
                     }
+					#div-test{
+					height:auto;
+					width:800px;
+					background-color:#ffffff;
+					color:#000000;
+					padding-bottom:20px;
+					padding-top:20px;
+					-moz-box-shadow: 0 0 2px black;
+    -webkit-box-shadow: 0 0 2px black;
+    box-shadow: 0 0 2px black;
 					
+					}
                     /* End Stylesheet code */
                 ',
         },
