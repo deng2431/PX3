@@ -39,28 +39,7 @@ else {
     );
 }
 
-$api->find_categories("tile");
 
-
-
-
-	 
-	
-	
-if($api->list_categories) {	
-	foreach my $io (@{$api->list_categories}){
-	
-	print $io->{cat_id}."\t".$io->{cat_name}."\n";
-	}
-	
-}	
-
-
-
-
-# print $api->first_category;
-
-=pod
 $api->add_item(
 
 		title => 'test listing32',
@@ -171,5 +150,21 @@ $api->update_item(
  }
 	
 }
+
+$api->find_categories("tile");
+
+
+
+
+	 
+	
+	
+if($api->list_categories) {	
+	foreach my $io (@{$api->list_categories}){
+	
+	print $io->{cat_id}."\t".$io->{cat_name}."\n";
+	}
+	
+}	
 
 =cut

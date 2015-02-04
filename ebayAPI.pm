@@ -6,7 +6,6 @@
     #
     # This module is strictly used for listing, update and delete items on eBay.
     #
-    # Author .......................... Michael Deng
 ################################################################################
 
 # Package Declaration
@@ -17,7 +16,6 @@
 # ------------------------------------------------------------------------------
         use strict;
         use warnings;
-        use Data::Dumper;    #need to be removed once development is complete
 
         # module to convert variable to lower case
         use Hash::Case::Lower;
@@ -29,7 +27,7 @@
         use eBay::API::XML::Call::GetSuggestedCategories;
         use eBay::API::XML::Call::EndItem;
 
-        # Datatype class - it acts as a container for api call data
+        # Data-type class - it acts as a container for api call data
         use eBay::API::XML::DataType::ItemType;
         use eBay::API::XML::DataType::CategoryType;
         use eBay::API::XML::DataType::ShippingServiceOptionsType;
@@ -38,7 +36,7 @@
 
 # Variable Declarations
 # ------------------------------------------------------------------------------
-# Globals
+# Global
 
         our $VERSION = "0.1";
 
